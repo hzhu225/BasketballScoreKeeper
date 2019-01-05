@@ -1,13 +1,127 @@
 package com.cms.basketballscorekeeper;
 
+import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Iterator;
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
+
+    public Stack<Integer> scoreStack;      //use a stack to store scores to enable Undo. Team A scores are positive. Team B scores are negative.
+    private TextView teamAScore;
+    private TextView teamBScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        scoreStack = new Stack<>();
+        teamAScore = findViewById(R.id.teamAScoreText);
+        teamBScore = findViewById(R.id.teamBScoreText);
+        updateScore();
     }
+
+    public void APlus1_Click(View view)
+    {
+        scoreStack.push(1);
+        updateScore();
+    }
+
+    public void APlus2_Click(View view)
+    {
+        scoreStack.push(2);
+        updateScore();
+    }
+
+    public void APlus3_Click(View view)
+    {
+        scoreStack.push(3);
+        updateScore();
+    }
+
+    public void BPlus1_Click(View view)
+    {
+        scoreStack.push(-1);
+        updateScore();
+    }
+
+    public void BPlus2_Click(View view)
+    {
+        scoreStack.push(-2);
+        updateScore();
+    }
+
+    public void BPlus3_Click(View view)
+    {
+        scoreStack.push(-3);
+        updateScore();
+    }
+
+    public void undo_Click(View view)
+    {
+        String message;
+        if(!scoreStack.isEmpty())
+        {
+            int lastScore = scoreStack.pop();
+            if(lastScore > 0)
+            {
+                message = "Undo: Team A +" + lastScore;
+            }
+            else
+            {
+                message = "Undo: Team B +" + Math.abs(lastScore);
+            }
+            updateScore();
+        }
+        else
+        {
+            message = "No score has been recorded.";
+        }
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP,0,25);
+        toast.show();
+    }
+
+    public void reset_Click(View view)
+    {
+        scoreStack.clear();
+        updateScore();
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    private void updateScore()
+    {
+        int score_A = 0;
+        int score_B = 0;
+
+        if (!scoreStack.isEmpty())
+        {
+            Iterator<Integer> iterator = scoreStack.iterator();
+            while (iterator.hasNext())
+            {
+                int s = iterator.next();
+                if (s > 0)
+                {
+                    score_A += s;
+                }
+                else
+                {
+                    score_B += s;
+                }
+            }
+        }
+        teamAScore.setText(Integer.toString(score_A));
+        teamBScore.setText(Integer.toString(Math.abs(score_B)));   //Team B scores are recorded as negative numbers. Show its absolute value.
+    }
+
+
+
 }
+
