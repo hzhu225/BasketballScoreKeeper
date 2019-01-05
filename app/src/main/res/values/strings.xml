@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Basketball Score Keeper</string>
+    <string name="team_a_name">Team A</string>
+    <string name="team_b_name">Team B</string>
+    <string name="plus1_text">+ 1 Pt</string>
+    <string name="plus2_text">+ 2 Pts</string>
+    <string name="plus3_text">+ 3 Pts</string>
+    <string name="undo_text">Undo</string>
+    <string name="reset_text">Reset</string>
+</resources>
