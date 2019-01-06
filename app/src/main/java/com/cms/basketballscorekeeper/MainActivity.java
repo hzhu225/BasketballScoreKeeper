@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         updateScore();
     }
 
-    public void APlus1_Click(View view)
+    public void APlus1_Click(View view)             //To add 1 score for Team A, push 1 into scoreStack.
     {
         scoreStack.push(1);
         updateScore();
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         updateScore();
     }
 
-    public void BPlus1_Click(View view)
+    public void BPlus1_Click(View view)             //To add 1 score for Team B, push -1 into scoreStack.
     {
         scoreStack.push(-1);
         updateScore();
@@ -63,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
         updateScore();
     }
 
-    public void undo_Click(View view)
+    public void undo_Click(View view)              //user can click undo button to go back
     {
         String message;
         if(!scoreStack.isEmpty())
         {
-            int lastScore = scoreStack.pop();
+            int lastScore = scoreStack.pop();       //pop last score and check its value
             if(lastScore > 0)
             {
                 message = "Undo: Team A +" + lastScore;
@@ -79,16 +79,16 @@ public class MainActivity extends AppCompatActivity {
             }
             updateScore();
         }
-        else
+        else                                      //if scoreStack is empty, there is no score yet. So cannot undo.
         {
             message = "No score has been recorded.";
         }
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP,0,25);
         toast.show();
     }
 
-    public void reset_Click(View view)
+    public void reset_Click(View view)           //when reset, just clear the scoreStack
     {
         scoreStack.clear();
         updateScore();
@@ -96,17 +96,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     @SuppressLint("SetTextI18n")
-    private void updateScore()
+    private void updateScore()                  //calculate the sum score for each team and show them
     {
         int score_A = 0;
         int score_B = 0;
 
         if (!scoreStack.isEmpty())
         {
-            Iterator<Integer> iterator = scoreStack.iterator();
-            while (iterator.hasNext())
+            for (Integer s : scoreStack)           //foreach Integer s in scoreStack
             {
-                int s = iterator.next();
                 if (s > 0)
                 {
                     score_A += s;
