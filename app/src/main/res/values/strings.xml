@@ -6,5 +6,9 @@
     <string name="plus2_text">+ 2 Pts</string>
     <string name="plus3_text">+ 3 Pts</string>
     <string name="undo_text">Undo</string>
+    <string name="undoAlert_title">Confirm Undo</string>
+    <string name="undoAlert_message">Do you want to undo last operation?</string>.
+    <string name="resetAlert_title">Confirm Reset</string>
+    <string name="resetAlert_message">Do you want to reset scores?</string>
     <string name="reset_text">Reset</string>
 </resources>

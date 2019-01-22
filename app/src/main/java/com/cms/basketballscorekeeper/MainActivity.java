@@ -1,6 +1,8 @@
 package com.cms.basketballscorekeeper;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -8,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Iterator;
+
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
@@ -65,33 +67,78 @@ public class MainActivity extends AppCompatActivity {
 
     public void undo_Click(View view)              //user can click undo button to go back
     {
-        String message;
-        if(!scoreStack.isEmpty())
-        {
-            int lastScore = scoreStack.pop();       //pop last score and check its value
-            if(lastScore > 0)
-            {
-                message = "Undo: Team A +" + lastScore;
-            }
-            else
-            {
-                message = "Undo: Team B +" + Math.abs(lastScore);
-            }
-            updateScore();
-        }
-        else                                      //if scoreStack is empty, there is no score yet. So cannot undo.
-        {
-            message = "No score has been recorded.";
-        }
-        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP,0,25);
-        toast.show();
+        //build an alert dialog, ask user to confirm
+        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(MainActivity.this);
+        confirmDialog.setTitle(R.string.undoAlert_title);
+        confirmDialog.setMessage(R.string.undoAlert_message);
+
+        confirmDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        String message;
+                        if (!scoreStack.isEmpty())
+                        {
+                            int lastScore = scoreStack.pop();       //pop last score and check its value
+                            if (lastScore > 0)
+                            {
+                                message = "Undo: Team A +" + lastScore;
+                            }
+                            else
+                            {
+                                message = "Undo: Team B +" + Math.abs(lastScore);
+                            }
+                            updateScore();
+                        }
+                        else                                      //if scoreStack is empty, there is no score yet. So cannot undo.
+                        {
+                            message = "No score has been recorded.";
+                        }
+                        Toast toast = Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.TOP, 0, 25);
+                        toast.show();
+                    }
+                });
+
+        confirmDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Do nothing
+                    }
+                });
+
+        confirmDialog.show();
     }
 
-    public void reset_Click(View view)           //when reset, just clear the scoreStack
+
+
+    public void reset_Click(View view)           //when reset, clear the scoreStack
     {
-        scoreStack.clear();
-        updateScore();
+        //build an alert dialog, ask user to confirm
+        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(MainActivity.this);
+        confirmDialog.setTitle(R.string.resetAlert_title);
+        confirmDialog.setMessage(R.string.resetAlert_message);
+
+        confirmDialog.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        scoreStack.clear();
+                        updateScore();
+                    }
+                });
+
+        confirmDialog.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Do nothing
+                    }
+                });
+
+        confirmDialog.show();
+
     }
 
 
